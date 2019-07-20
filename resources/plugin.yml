@@ -1,0 +1,5 @@
+main: me.justeli.oak.main.Oak
+author: JustEli
+version: 0.2
+name: Oak
+api-version: 1.13
