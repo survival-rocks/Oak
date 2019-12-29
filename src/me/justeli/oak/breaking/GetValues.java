@@ -55,7 +55,7 @@ public class GetValues implements TreeBlock
             if (treeBlock.isWood())
                 continue;
 
-            if (l.equals(Material.DIRT) || l.equals(Material.GRASS_BLOCK))
+            if (l.equals(Material.DIRT) || l.equals(Material.GRASS_BLOCK) || l.equals(Material.PODZOL))
                 sapling = below.getLocation().add(0, 1, 0).getBlock();
 
             else break;
@@ -138,7 +138,7 @@ public class GetValues implements TreeBlock
             }
         }
 
-        if (loopType.equals(LoopType.ABOVE))
+        else if (loopType.equals(LoopType.ABOVE))
         {
             for (double y = sY +1; y <= sY + radius; y++)
             {
@@ -147,7 +147,7 @@ public class GetValues implements TreeBlock
             }
         }
 
-        if (loopType.equals(LoopType.FLAT))
+        else if (loopType.equals(LoopType.FLAT))
         {
             for (double x = sX - radius; x <= sX + radius; x++)
             {
@@ -159,7 +159,7 @@ public class GetValues implements TreeBlock
             }
         }
 
-        if (loopType.equals(LoopType.CUBIC))
+        else if (loopType.equals(LoopType.CUBIC))
         {
             for (double x = sX - radius; x <= sX + radius; x++)
             {

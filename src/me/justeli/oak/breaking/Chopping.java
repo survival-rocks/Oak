@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -69,16 +70,24 @@ class Chopping
 			{
 				block.getLocation().getWorld().spawnParticle(Particle.BLOCK_CRACK,
 						block.getLocation().add(0.5, 0.5, 0.5), 50, 0, 0, 0, block.getBlockData());
-				//old ParticleEffect.BLOCK_CRACK.display(new ParticleEffect.BlockData(treeBlock.getLogType(),
-								//treeBlock.getLogByte()), 0.2f, 0.2f, 0.2f, 1f, 50, block.getLocation().add(0.5, 0.5, 0.5), 32);
 
 				block.breakNaturally();
 				// TODO: Loop with crack animation on block.
-
-				int durability = tool.getDurability();
-				tool.setDurability((short) (durability + 1));
 			}
 		});
+
+		int durability = tool.getDurability();
+		if (durability > tool.getType().getMaxDurability()) tool.setAmount(0);
+		else
+		{
+			int usage = 1;
+			if (tool.getEnchantments().containsKey(Enchantment.DURABILITY))
+			{
+				float level = tool.getEnchantmentLevel(Enchantment.DURABILITY);
+				if (Math.random() < 1/(level+1)) usage = 0;
+			}
+			tool.setDurability((short) (durability + usage));
+		}
 	}
 
 	private static void plantSapling (final ArrayList<Block> finalBlocks, Material cutBlock)
@@ -91,9 +100,7 @@ class Chopping
 					Block species = sapling.getLocation().getBlock();
 
 					species.setType(toSapling(cutBlock));
-					species.getLocation().getWorld().spawnParticle(Particle.CLOUD,
-							species.getLocation().add(0.5, 0.5, 0.5), 30, 0, 0, 0, 0.02);
-					//ParticleEffect.CLOUD.display(0.3f, 0.3f, 0.3f, 0.05f, 10, species.getLocation().add(0.5, 0.5, 0.5), 30);
+					species.getLocation().getWorld().spawnParticle(Particle.CLOUD, species.getLocation().add(0.5, 0.5, 0.5), 30, 0, 0, 0, 0.02);
 				}
 		});
 	}
